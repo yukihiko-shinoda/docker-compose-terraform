@@ -127,3 +127,11 @@ dmypy.json
 
 # Pyre type checker
 .pyre/
+
+# This project original
+.aws/*
+/config.yml
+/plan_logs/*
+!/plan_logs/.gitkeep
+/report.md.jinja
+/report.md

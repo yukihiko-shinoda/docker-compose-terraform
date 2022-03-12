@@ -1,0 +1,32 @@
+# You can define multiple terraform projects as dictionary.
+# The key of dictionary be the options of command line option: --prj .
+# Like: pytest tests --prj terraform-project-a
+projects:
+  terraform-project-a:
+    # The dictionary to run command: terraform plan .
+    # This supports jinja to support different directory for each environment.
+    # See example at next key in this YAML: terraform-project-b .
+    directory: terraform-project-a
+    # The command to select environment and prepare to plan.
+    # This also supports jinja.
+    command_select_environment: terraform workspace select {{ environment }} && terraform workspace show
+    # The command to plan.
+    # This also supports jinja.
+    command_plan: terraform plan -detailed-exitcode -no-color
+    # The dictionary of environment.
+    # The key of dictionary can be refer from each jinja.
+    # You can add additional jinja parameters as dictionary by values of dictionary.
+    environments:
+      dev: {}
+      prod: {}
+  terraform-project-b:
+    directory: terraform-project-b/environments/{{ environment_name }}
+    command_select_environment: make reconfigure
+    command_plan: make plan
+    environments:
+      dev:
+        environment_name: development
+      stg:
+        environment_name: staging
+      prod:
+        environment_name: production

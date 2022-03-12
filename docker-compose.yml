@@ -1,0 +1,8 @@
+version: "3.8"
+services:
+  tfenv:
+    build: .
+    image: futureys/tfenv:development
+    volumes:
+      - .:/workspace:cached
+      - ~/.aws:/root/.aws
