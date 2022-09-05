@@ -25,6 +25,8 @@ RUN apt-get update && \
 	. ~/.bashrc && \
 	apt-get -y autoremove && \
 	rm -rf /var/lib/apt/lists/*
+# tfmigrate
+RUN curl --location https://github.com/minamijoyo/tfmigrate/releases/download/v0.3.7/tfmigrate_0.3.7_linux_amd64.tar.gz | tar --extract --gzip --directory=/usr/local/bin
 # TFLint
 RUN sh -c 'curl -s https://raw.githubusercontent.com/terraform-linters/tflint/master/install_linux.sh | bash'
 # build-essential (make): Since project uses shell script with shebang #!/bin/bash
