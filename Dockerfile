@@ -38,7 +38,7 @@ RUN apt-get update && \
  && apt-get -y autoremove \
  && rm -rf /var/lib/apt/lists/*
 # Python packages for automation
-RUN pip3 install invoke==1.5.0 pytest-xdist==2.2.0 Jinja2==3.0.3 yamldataclassconfig==1.5.0
+RUN pip3 install invoke==1.7.1 pytest-xdist==2.5.0 Jinja2==3.1.2 yamldataclassconfig==1.5.0
 # test command
 COPY ./fmt-test.sh /usr/local/bin/fmt-test
 RUN chmod +x /usr/local/bin/fmt-test
