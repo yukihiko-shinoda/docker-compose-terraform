@@ -42,7 +42,7 @@
 	// Add the IDs of extensions you want installed when the container is created.
 	"extensions": [
 		"hashicorp.terraform",
-		"ms-python.vscode-pylance",
+		"ms-python.python",
 		"streetsidesoftware.code-spell-checker"
 	]
 
