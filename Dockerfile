@@ -6,6 +6,16 @@ RUN apt-get update && \
 	apt-get -y upgrade && \
 	apt-get -y install \
 		curl \
+		# Git required when download some aws module:
+		#   Could not download module "s3_bucket"
+		#   (services/performance_reposync/cloudwatchlogs.tf:11) source code from
+		#   "git::https://github.com/terraform-aws-modules/terraform-aws-s3-bucket?ref=v1.22.0":
+		#   error downloading
+		#   'https://github.com/terraform-aws-modules/terraform-aws-s3-bucket?ref=v1.22.0':
+		#   git must be available and on the PATH.
+		# see:
+		#   - Module Sources - Terraform by HashiCorp
+		#     https://www.terraform.io/docs/language/modules/sources.html#generic-git-repository
 		git \
 		libdigest-sha-perl \
 		unzip \
@@ -13,19 +23,6 @@ RUN apt-get update && \
 	git clone https://github.com/tfutils/tfenv.git ~/.tfenv && \
 	echo 'PATH=${HOME}/.tfenv/bin:${PATH}' >> ~/.bashrc && \
 	. ~/.bashrc && \
-	# Git required when download some aws module:
-	#   Could not download module "s3_bucket"
-    #   (services/performance_reposync/cloudwatchlogs.tf:11) source code from
-    #   "git::https://github.com/terraform-aws-modules/terraform-aws-s3-bucket?ref=v1.22.0":
-    #   error downloading
-    #   'https://github.com/terraform-aws-modules/terraform-aws-s3-bucket?ref=v1.22.0':
-    #   git must be available and on the PATH.
-	# see:
-	#   - Module Sources - Terraform by HashiCorp
-	#     https://www.terraform.io/docs/language/modules/sources.html#generic-git-repository
-	# apt-get -y remove --purge \
-	# 	git \
-	# 	&& \
 	apt-get -y autoremove && \
 	rm -rf /var/lib/apt/lists/*
 # TFLint
