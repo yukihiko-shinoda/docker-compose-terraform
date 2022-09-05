@@ -27,18 +27,16 @@
 			"editor.formatOnSave": false,
 			"editor.codeActionsOnSave": {
 				"source.formatAll.terraform": true
-			},
+			}
 		},
 		"[terraform-vars]": {
 			"editor.defaultFormatter": "hashicorp.terraform",
 			"editor.formatOnSave": false,
 			"editor.codeActionsOnSave": {
 				"source.formatAll.terraform": true
-			},
+			}
 		},
-		"terraform-ls.experimentalFeatures": {
-			"validateOnSave": true
-		}
+		"terraform.experimentalFeatures.validateOnSave": true
 	},
 
 	// Add the IDs of extensions you want installed when the container is created.
