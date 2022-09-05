@@ -20,7 +20,7 @@ RUN apt-get update && \
 		libdigest-sha-perl \
 		unzip \
 		&& \
-	git clone https://github.com/tfutils/tfenv.git ~/.tfenv && \
+	git clone --branch v3.0.0 --depth=1 https://github.com/tfutils/tfenv.git ~/.tfenv && \
 	echo 'PATH=${HOME}/.tfenv/bin:${PATH}' >> ~/.bashrc && \
 	. ~/.bashrc && \
 	apt-get -y autoremove && \
