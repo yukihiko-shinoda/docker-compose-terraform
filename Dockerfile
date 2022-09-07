@@ -30,6 +30,8 @@ RUN curl --location https://github.com/minamijoyo/tfmigrate/releases/download/v0
 # TFLint
 ENV TFLINT_VERSION=v0.39.3
 RUN curl -s https://raw.githubusercontent.com/terraform-linters/tflint/master/install_linux.sh | bash
+# tfsec
+RUN curl -s https://raw.githubusercontent.com/aquasecurity/tfsec/master/scripts/install_linux.sh | bash
 # build-essential (make): Since project uses shell script with shebang #!/bin/bash
 RUN apt-get update && \
 	apt-get -y upgrade && \
