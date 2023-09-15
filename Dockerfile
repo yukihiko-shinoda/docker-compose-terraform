@@ -46,3 +46,8 @@ COPY ./fmt-test.sh /usr/local/bin/fmt-test
 RUN chmod +x /usr/local/bin/fmt-test
 # For compatiblity with Visual Studio Code
 WORKDIR /workspace
+# - Terraform を使用するためのベスト プラクティス  |  Google Cloud
+#   https://cloud.google.com/docs/terraform/best-practices-for-terraform?hl=ja
+# - Answer: unix - How can I set Bash aliases for docker containers in Dockerfile? - Stack Overflow
+#   https://stackoverflow.com/a/45042399/12721873
+RUN ln -s /root/.tfenv/bin/terraform /root/.tfenv/bin/tf
