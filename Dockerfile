@@ -28,7 +28,7 @@ RUN apt-get update && \
 # tfmigrate
 RUN curl --location https://github.com/minamijoyo/tfmigrate/releases/download/v0.3.7/tfmigrate_0.3.7_linux_amd64.tar.gz | tar --extract --gzip --directory=/usr/local/bin
 # TFLint
-ENV TFLINT_VERSION=v0.39.3
+ENV TFLINT_VERSION=v0.48.0
 RUN curl -s https://raw.githubusercontent.com/terraform-linters/tflint/master/install_linux.sh | bash
 # tfsec
 RUN curl -s https://raw.githubusercontent.com/aquasecurity/tfsec/master/scripts/install_linux.sh | bash
