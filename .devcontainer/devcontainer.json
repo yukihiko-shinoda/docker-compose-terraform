@@ -18,34 +18,35 @@
 	// The optional 'workspaceFolder' property is the path VS Code should open by default when
 	// connected. This is typically a file mount in .devcontainer/docker-compose.yml
 	"workspaceFolder": "/workspace",
-
-	// Set *default* container specific settings.json values on container create.
-	"settings": {
-		"editor.formatOnSave": true,
-		"[terraform]": {
-			"editor.defaultFormatter": "hashicorp.terraform",
-			"editor.formatOnSave": false,
-			"editor.codeActionsOnSave": {
-				"source.formatAll.terraform": true
+	"customizations": {
+		"vscode": {
+			// Add the IDs of extensions you want installed when the container is created.
+			"extensions": [
+				"hashicorp.terraform",
+				"ms-python.python",
+				"streetsidesoftware.code-spell-checker"
+			],
+			// Set *default* container specific settings.json values on container create.
+			"settings": {
+				"editor.formatOnSave": true,
+				"terraform.experimentalFeatures.validateOnSave": true,
+				"[terraform]": {
+					"editor.defaultFormatter": "hashicorp.terraform",
+					"editor.formatOnSave": false,
+					"editor.codeActionsOnSave": {
+						"source.formatAll.terraform": true
+					}
+				},
+				"[terraform-vars]": {
+					"editor.defaultFormatter": "hashicorp.terraform",
+					"editor.formatOnSave": false,
+					"editor.codeActionsOnSave": {
+						"source.formatAll.terraform": true
+					}
+				}
 			}
-		},
-		"[terraform-vars]": {
-			"editor.defaultFormatter": "hashicorp.terraform",
-			"editor.formatOnSave": false,
-			"editor.codeActionsOnSave": {
-				"source.formatAll.terraform": true
-			}
-		},
-		"terraform.experimentalFeatures.validateOnSave": true
-	},
-
-	// Add the IDs of extensions you want installed when the container is created.
-	"extensions": [
-		"hashicorp.terraform",
-		"ms-python.python",
-		"streetsidesoftware.code-spell-checker"
-	]
-
+		}
+	}
 	// Use 'forwardPorts' to make a list of ports inside the container available locally.
 	// "forwardPorts": [],
 
