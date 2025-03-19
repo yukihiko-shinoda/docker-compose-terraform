@@ -7,8 +7,8 @@
 	// Update the 'dockerComposeFile' list if you have more compose files or use different names.
 	// The .devcontainer/docker-compose.yml file contains any overrides you need/want to make.
 	"dockerComposeFile": [
-		"../docker-compose.yml",
-		"docker-compose.yml"
+		"../compose.yml",
+		"compose.yml"
 	],
 
 	// The 'service' property is the name of the service for the container that VS Code should
@@ -28,20 +28,71 @@
 			],
 			// Set *default* container specific settings.json values on container create.
 			"settings": {
+				"cSpell.customDictionaries": {
+					"project-words": {
+						"name": "project-words",
+						"path": "${workspaceRoot}/project-words.txt",
+						"description": "Words used in this project",
+						"addWords": true
+					}
+				},
+				"cSpell.diagnosticLevel": "Hint",
+				"cSpell.patterns": [
+					{
+						"name": "terraform.comment.single-line",
+						"description": "Matches Terraform single-line comments",
+						"pattern": "/(#|\\/\\/).*/g"
+					},
+					{
+						"name": "terraform.comment",
+						"description": "Matches Terraform comments",
+						"pattern": [
+							"CStyleComment",
+							"terraform.comment.single-line"
+						]
+					}
+				],
+				"cSpell.languageSettings": [
+					{
+						"languageId": "terraform,tf",
+						"includeRegExpList": [
+							"terraform.comment"
+						]
+					}
+				],
+				"cSpell.overrides": [
+					{
+						"filename": [
+							"*.tf",
+							"*.tfvars"
+						],
+						"languageId": "terraform"
+					}
+				],
+				"cSpell.ignoreWords": [
+					"tfvars"
+				],
+				"cSpell.enabledFileTypes": {
+					"tf": true,
+					"terraform": true
+				},
 				"editor.formatOnSave": true,
+				"files.associations": {
+					"*.tftest.hcl": "terraform"
+				},
 				"terraform.experimentalFeatures.validateOnSave": true,
 				"[terraform]": {
 					"editor.defaultFormatter": "hashicorp.terraform",
 					"editor.formatOnSave": false,
 					"editor.codeActionsOnSave": {
-						"source.formatAll.terraform": true
+						"source.formatAll.terraform": "explicit"
 					}
 				},
 				"[terraform-vars]": {
 					"editor.defaultFormatter": "hashicorp.terraform",
 					"editor.formatOnSave": false,
 					"editor.codeActionsOnSave": {
-						"source.formatAll.terraform": true
+						"source.formatAll.terraform": "explicit"
 					}
 				}
 			}

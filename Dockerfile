@@ -1,4 +1,4 @@
-FROM python:3.11.5-slim-bullseye
+FROM python:3.13.2-slim-bookworm
 
 # tfenv
 # Reffered: https://github.com/DockerToolbox/docker-tfenv/blob/master/Dockerfiles/alpine/3.10/Dockerfile
@@ -26,12 +26,16 @@ RUN apt-get update && \
 	apt-get -y autoremove && \
 	rm -rf /var/lib/apt/lists/*
 # tfmigrate
-RUN curl --location https://github.com/minamijoyo/tfmigrate/releases/download/v0.3.7/tfmigrate_0.3.7_linux_amd64.tar.gz | tar --extract --gzip --directory=/usr/local/bin
+RUN curl --location https://github.com/minamijoyo/tfmigrate/releases/download/v0.4.1/tfmigrate_0.4.1_linux_amd64.tar.gz | tar --extract --gzip --directory=/usr/local/bin
 # TFLint
-ENV TFLINT_VERSION=v0.48.0
+ENV TFLINT_VERSION=v0.55.1
 RUN curl -s https://raw.githubusercontent.com/terraform-linters/tflint/master/install_linux.sh | bash
-# tfsec
-RUN curl -s https://raw.githubusercontent.com/aquasecurity/tfsec/master/scripts/install_linux.sh | bash
+# Trivy
+RUN apt-get update && \
+    apt-get -y install apt-transport-https gnupg lsb-release
+RUN curl -s https://aquasecurity.github.io/trivy-repo/deb/public.key | gpg --dearmor | tee /usr/share/keyrings/trivy.gpg > /dev/null
+RUN echo "deb [signed-by=/usr/share/keyrings/trivy.gpg] https://aquasecurity.github.io/trivy-repo/deb $(lsb_release -sc) main" | tee -a /etc/apt/sources.list.d/trivy.list
+RUN apt-get update && apt-get -y install trivy
 # build-essential (make): Since project uses shell script with shebang #!/bin/bash
 RUN apt-get update && \
 	apt-get -y upgrade && \
@@ -40,7 +44,7 @@ RUN apt-get update && \
  && apt-get -y autoremove \
  && rm -rf /var/lib/apt/lists/*
 # Python packages for automation
-RUN pip3 install invoke==1.7.1 pytest-xdist==2.5.0 Jinja2==3.1.2 yamldataclassconfig==1.5.0
+RUN pip3 install invoke==2.2.0 pytest-xdist==3.6.1 Jinja2==3.1.6 yamldataclassconfig==1.5.0
 # test command
 COPY ./fmt-test.sh /usr/local/bin/fmt-test
 RUN chmod +x /usr/local/bin/fmt-test
