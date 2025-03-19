@@ -48,6 +48,15 @@ RUN pip3 install invoke==2.2.0 pytest-xdist==3.6.1 Jinja2==3.1.6 yamldataclassco
 # test command
 COPY ./fmt-test.sh /usr/local/bin/fmt-test
 RUN chmod +x /usr/local/bin/fmt-test
+# Guard
+# RUN curl --proto '=https' --tlsv1.2 -sSf https://raw.githubusercontent.com/aws-cloudformation/cloudformation-guard/main/install-guard.sh | sh
+# Install legacy version by arranging following method:
+# - v2.1 Fails install on Codebuild · Issue #253 · aws-cloudformation/cloudformation-guard
+#   https://github.com/aws-cloudformation/cloudformation-guard/issues/253#issuecomment-1315823073
+RUN curl --proto '=https' --tlsv1.2 -sSf https://raw.githubusercontent.com/aws-cloudformation/cloudformation-guard/2.1.4/install-guard.sh > /tmp/install-guard.sh
+RUN sed -i 's|https://api.github.com/repos/aws-cloudformation/cloudformation-guard/releases/latest|https://api.github.com/repos/aws-cloudformation/cloudformation-guard/releases/tags/2.1.4|g' /tmp/install-guard.sh
+RUN sh -x /tmp/install-guard.sh
+ENV PATH="$PATH:~/.guard/bin/"
 # For compatiblity with Visual Studio Code
 WORKDIR /workspace
 # - Terraform を使用するためのベスト プラクティス  |  Google Cloud
