@@ -1,7 +1,7 @@
 services:
-  tfenv:
+  tenv:
     build: .
-    image: futureys/tfenv:development
+    image: futureys/tenv:development
     volumes:
       - .:/workspace:cached
       - ~/.aws:/root/.aws
