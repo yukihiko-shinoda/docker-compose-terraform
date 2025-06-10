@@ -20,7 +20,7 @@ class Runner:
 
     def execute(self):
         try:
-            self.cd_and_run("tfenv install")
+            self.cd_and_run("tenv tf install")
             self.cd_and_run(self.command_select_environment)
             return self.cd_and_run(self.command_plan)
         except UnexpectedExit as error:

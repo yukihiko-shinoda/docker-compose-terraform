@@ -73,3 +73,4 @@ RUN curl --proto '=https' --tlsv1.2 -sSf https://raw.githubusercontent.com/aws-c
 ENV PATH="$PATH:~/.guard/bin/"
 # For compatiblity with Visual Studio Code
 WORKDIR /workspace
+ENV TENV_AUTO_INSTALL=true
