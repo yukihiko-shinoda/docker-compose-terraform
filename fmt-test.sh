@@ -8,5 +8,5 @@ terraform fmt -recursive
 terraform validate
 if test -f ".tflint.hcl"; then
     tflint --init
-    tflint
+    tflint --recursive
 fi
