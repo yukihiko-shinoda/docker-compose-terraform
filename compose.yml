@@ -1,6 +1,12 @@
 services:
   tenv:
-    build: .
+    build:
+      context: .
+      args:
+        DOCKER_IMAGE_TAG_PYTHON: 3.13.7-slim-trixie
+        TENV_VERSION: v4.7.21
+        TFLINT_VERSION: v0.59.1
+        TRIVY_VERSION: v0.66.0
     image: futureys/tenv:development
     volumes:
       - .:/workspace:cached
