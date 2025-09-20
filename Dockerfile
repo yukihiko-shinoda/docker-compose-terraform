@@ -32,8 +32,6 @@ RUN curl -O -L https://github.com/tofuutils/tenv/releases/latest/download/tenv_$
  && echo 'source ${HOME}/.tenv.completion.bash' >> ~/.bashrc
 # To install tfmigrate, TFLint, and Trivy
 SHELL ["/bin/bash", "-o", "pipefail", "-c"]
-# tfmigrate
-RUN curl --location https://github.com/minamijoyo/tfmigrate/releases/download/v0.4.2/tfmigrate_0.4.2_linux_amd64.tar.gz | tar --extract --gzip --directory=/usr/local/bin
 # TFLint
 ENV TFLINT_VERSION=v0.58.0
 RUN curl -s https://raw.githubusercontent.com/terraform-linters/tflint/master/install_linux.sh | bash
