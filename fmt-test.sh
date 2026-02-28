@@ -8,5 +8,5 @@ terraform fmt -recursive
 terraform validate
 if test -f ".tflint.hcl"; then
     tflint --init
-    tflint --recursive
+    tflint --recursive --config "$(pwd)/.tflint.hcl"
 fi
