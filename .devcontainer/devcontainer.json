@@ -3,7 +3,7 @@
 // If you want to run as a non-root user in the container, see .devcontainer/docker-compose.yml.
 {
 	"name": "Existing Docker Compose (Extend)",
-
+	
 	// Update the 'dockerComposeFile' list if you have more compose files or use different names.
 	// The .devcontainer/docker-compose.yml file contains any overrides you need/want to make.
 	"dockerComposeFile": [
@@ -23,9 +23,10 @@
 			// Add the IDs of extensions you want installed when the container is created.
 			"extensions": [
 				"anthropic.claude-code",
+				"streetsidesoftware.code-spell-checker",
+				"hashicorp.hcl",
 				"hashicorp.terraform",
-				"ms-python.python",
-				"streetsidesoftware.code-spell-checker"
+				"ms-python.python"
 			],
 			// Set *default* container specific settings.json values on container create.
 			"settings": {
