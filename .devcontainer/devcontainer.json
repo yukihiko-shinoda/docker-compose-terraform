@@ -22,6 +22,7 @@
 		"vscode": {
 			// Add the IDs of extensions you want installed when the container is created.
 			"extensions": [
+				"anthropic.claude-code",
 				"hashicorp.terraform",
 				"ms-python.python",
 				"streetsidesoftware.code-spell-checker"

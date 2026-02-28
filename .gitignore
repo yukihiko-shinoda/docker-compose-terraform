@@ -102,7 +102,7 @@ celerybeat.pid
 *.sage.py
 
 # Environments
-.env
+# .env
 .venv
 env/
 venv/
@@ -137,3 +137,5 @@ dmypy.json
 /report.md
 # To archive Lambda function code before uploading
 .zip/*
+# To change default working directory to project specific one
+docker-compose-terraform.code-workspace

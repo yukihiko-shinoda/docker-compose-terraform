@@ -3,11 +3,13 @@ services:
     build:
       context: .
       args:
-        DOCKER_IMAGE_TAG_PYTHON: 3.13.7-slim-trixie
-        TENV_VERSION: v4.7.21
-        TFLINT_VERSION: v0.59.1
-        TRIVY_VERSION: v0.66.0
+        DOCKER_BASE_IMAGE: ${DOCKER_BASE_IMAGE:?err}
+        TENV_VERSION: ${TENV_VERSION:?err}
+        TFLINT_VERSION: ${TFLINT_VERSION:?err}
+        TRIVY_VERSION: ${TRIVY_VERSION:?err}
     image: futureys/tenv:development
     volumes:
       - .:/workspace:cached
+      - /workspace/.venv
       - ~/.aws:/root/.aws
+      - ~/.claude:/root/.claude
