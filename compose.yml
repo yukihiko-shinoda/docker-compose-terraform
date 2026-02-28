@@ -7,6 +7,7 @@ services:
         TENV_VERSION: ${TENV_VERSION:?err}
         TFLINT_VERSION: ${TFLINT_VERSION:?err}
         TRIVY_VERSION: ${TRIVY_VERSION:?err}
+        GUARD_VERSION: ${GUARD_VERSION:?err}
     image: futureys/tenv:development
     volumes:
       - .:/workspace:cached

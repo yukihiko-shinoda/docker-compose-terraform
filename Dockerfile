@@ -5,7 +5,8 @@ FROM ${DOCKER_BASE_IMAGE}
 ARG TENV_VERSION \
     TFLINT_VERSION \
 	TRIVY_VERSION \
-    BUILDARCH    
+	GUARD_VERSION \
+    BUILDARCH
 # tenv
 RUN apt-get upgrade \
  && apt-get update \
@@ -64,8 +65,8 @@ RUN chmod +x /usr/local/bin/fmt-test
 # Install legacy version by arranging following method:
 # - v2.1 Fails install on Codebuild · Issue #253 · aws-cloudformation/cloudformation-guard
 #   https://github.com/aws-cloudformation/cloudformation-guard/issues/253#issuecomment-1315823073
-RUN curl --proto '=https' --tlsv1.2 -sSf https://raw.githubusercontent.com/aws-cloudformation/cloudformation-guard/2.1.4/install-guard.sh > /tmp/install-guard.sh \
- && sed -i 's|https://api.github.com/repos/aws-cloudformation/cloudformation-guard/releases/latest|https://api.github.com/repos/aws-cloudformation/cloudformation-guard/releases/tags/2.1.4|g' /tmp/install-guard.sh \
+RUN curl --proto '=https' --tlsv1.2 -sSf https://raw.githubusercontent.com/aws-cloudformation/cloudformation-guard/${GUARD_VERSION}/install-guard.sh > /tmp/install-guard.sh \
+ && sed -i "s|https://api.github.com/repos/aws-cloudformation/cloudformation-guard/releases/latest|https://api.github.com/repos/aws-cloudformation/cloudformation-guard/releases/tags/${GUARD_VERSION}|g" /tmp/install-guard.sh \
  && sh -x /tmp/install-guard.sh
 ENV PATH="$PATH:~/.guard/bin/"
 # To prevent following error when run `terraform validate`:
