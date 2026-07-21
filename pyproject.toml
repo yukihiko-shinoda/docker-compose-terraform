@@ -3,7 +3,7 @@ name = "pyterraform"
 version = "0.1.0"
 description = "Add your description here"
 readme = "README.md"
-requires-python = "==3.13"
+requires-python = ">=3.14.5"
 dependencies = [
     "invoke==2.2.0",
     "pytest-xdist==3.8.0",
