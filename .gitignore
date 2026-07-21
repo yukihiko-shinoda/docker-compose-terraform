@@ -139,3 +139,5 @@ dmypy.json
 .zip/*
 # To change default working directory to project specific one
 docker-compose-terraform.code-workspace
+# To run Terraform parallel execution tool (tfpcli)
+tfp.yml

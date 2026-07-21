@@ -1,4 +1,4 @@
-ARG DOCKER_BASE_IMAGE=futureys/claude-code-python-development:20260221145500
+ARG DOCKER_BASE_IMAGE=futureys/claude-code-python-development:20260710125000
 FROM ${DOCKER_BASE_IMAGE}
 # - Dockerfileで対象プラットフォームによって処理分岐させる
 #   https://zenn.dev/ytdrep/articles/d65c26201042eb
@@ -54,9 +54,8 @@ RUN apt-get upgrade \
  && apt-get -y autoremove \
  && apt-get clean \
  && rm -rf /var/lib/apt/lists/*
-# Python packages for automation
-COPY pyproject.toml /workspace/
-RUN uv sync
+# Terraform parallel execution tool (tfpcli)
+RUN uv tool install tfpcli
 # test command
 COPY ./fmt-test.sh /usr/local/bin/fmt-test
 RUN chmod +x /usr/local/bin/fmt-test
