@@ -1,0 +1,14 @@
+{
+    "folders": [
+        {
+            "path": "./__PROJECT__",
+            "name": "project"
+        },
+        {
+            "path": "/tmp"
+        }
+    ],
+    "settings": {
+        "terminal.integrated.cwd": "${workspaceFolder:project}",
+    }
+}

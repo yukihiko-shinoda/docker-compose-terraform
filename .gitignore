@@ -137,7 +137,8 @@ dmypy.json
 /report.md
 # To archive Lambda function code before uploading
 .zip/*
-# To change default working directory to project specific one
-docker-compose-terraform.code-workspace
+# Generated per-project VS Code workspace files (generate with open-project.sh)
+*.code-workspace
+!workspace-template.code-workspace
 # To run Terraform parallel execution tool (tfpcli)
 tfp.yml
