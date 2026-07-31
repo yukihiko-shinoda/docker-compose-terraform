@@ -3,11 +3,21 @@ services:
     build:
       context: .
       args:
-        DOCKER_BASE_IMAGE: ${DOCKER_BASE_IMAGE:?err}
-        TENV_VERSION: ${TENV_VERSION:?err}
-        TFLINT_VERSION: ${TFLINT_VERSION:?err}
-        TRIVY_VERSION: ${TRIVY_VERSION:?err}
-        GUARD_VERSION: ${GUARD_VERSION:?err}
+        # - futureys/claude-code-python-development - Docker Image
+        #   https://hub.docker.com/r/futureys/claude-code-python-development/tags
+        DOCKER_BASE_IMAGE: futureys/claude-code-python-development:20260710125000
+        # - Releases · tofuutils/tenv
+        #   https://github.com/tofuutils/tenv/releases
+        TENV_VERSION: v4.14.8
+        # - Releases · terraform-linters/tflint
+        #   https://github.com/terraform-linters/tflint/releases
+        TFLINT_VERSION: v0.64.0
+        # - Releases · aquasecurity/trivy
+        #   https://github.com/aquasecurity/trivy/releases
+        TRIVY_VERSION: v0.72.0
+        # - Releases · aws-cloudformation/cloudformation-guard
+        #   https://github.com/aws-cloudformation/cloudformation-guard/releases
+        GUARD_VERSION: 2.1.4
     image: futureys/tenv:development
     volumes:
       - .:/workspace:cached
