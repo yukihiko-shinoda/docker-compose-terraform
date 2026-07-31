@@ -24,8 +24,13 @@
 			"extensions": [
 				"anthropic.claude-code",
 				"streetsidesoftware.code-spell-checker",
+				"mhutchie.git-graph",
+				"eamodio.gitlens",
+				"DavidAnson.vscode-markdownlint",
+				"redhat.vscode-yaml",
 				"hashicorp.hcl",
 				"hashicorp.terraform",
+				"AquaSecurityOfficial.trivy-vulnerability-scanner",
 				"ms-python.python"
 			],
 			// Set *default* container specific settings.json values on container create.
