@@ -30,6 +30,7 @@
 			],
 			// Set *default* container specific settings.json values on container create.
 			"settings": {
+				"extensions.autoUpdateDelay": 72,
 				"cSpell.customDictionaries": {
 					"project-words": {
 						"name": "project-words",
