@@ -6,21 +6,18 @@ The develop environment for Terraform projects.
 
 Out of the box📦 for any Terraform project:
 
-- Supports any Terraform version🙆 by [tfenv]
+- Supports any Terraform version🙆 by [tenv]
 - Auto format on save by [HashiCorp Terraform Extension]
 - Implements efficient commands🚀 for:
   - Format and test code quickly
     - `terraform fmt -recursive`
     - `terraform validate`
     - [TFLint] (if `.tflint.hcl` exists in Terraform project)
-  - Plan all environment (supports running as parallel)
-  - Render differences report of all plans
+  - Plan all environments in parallel by [tfp]
 - Customizable by jinja in YAML configuration file🔧
   - The directory to run terraform command
-  - The command to select environment and prepare to plan.
+  - The command to select environment and prepare to plan
   - The command to plan
-
-### Out of the box for any Terraform project
 
 ## Quickstart
 
@@ -55,46 +52,17 @@ code .
 
 Run the `Remote-Containers: Reopen in Container` command from the Command Palette (`F1`) or quick actions Status bar item.
 
-#### 5\. Create config.yml to customize for your Terraform project
+#### 5\. Create tfp.yml to customize for your Terraform project
 
-Copy `config.yml.dist` to `config.yml`, then edit it.
+Copy `tfp.yml.dist` to `tfp.yml`, then edit it.
 
 Details is explained by comments in its file.
 
-#### 6\. Create report.md.jinja to render report of plans
+<!-- markdownlint-disable-next-line MD026 -->
+## How do I...
 
-Copy `report.md.jinja.dist` to `report.md.jinja`, then edit it.
-
-The differences of all plan is rendered at point of corresponding environment name which is defined into `config.yml`.
-
-EX:
-
-```yaml
-projects:
-  terraform-project-a:
-# ------------------------------
-    environments:
-      dev: {}
-      prod: {}
-```
-
-````jinja
-## dev
-
-```console
-{{ dev }}
-```
-
-## prod
-
-```console
-{{ prod }}
-```
-````
-
-## Usage
-
-### Format and test code quickly
+<!-- markdownlint-disable-next-line MD026 -->
+### How do I format and test code quickly?
 
 ```console
 fmt-test <project directory name>
@@ -106,43 +74,40 @@ EX:
 fmt-test terraform-project-a
 ```
 
-### Plan all environment
+<!-- markdownlint-disable-next-line MD026 -->
+### How do I plan all environments?
 
 Note: If you are using Terraform Enterprise, it requires to login to Terraform Enterprise before run following commands.
 
 ```console
-pytest tests --prj <project name defined in YAML>
+tfp run <project name defined in tfp.yml>
 ```
 
 EX:
 
 ```console
-pytest tests --prj terraform-project-a
+tfp run terraform-project-a
 ```
 
-#### As parallel
+<!-- markdownlint-disable-next-line MD026 -->
+### How do I control the number of parallel workers when planning?
+
+By default, [tfp] runs one worker per environment, capped at the CPU count. Pass `-n` to override it.
 
 ```console
-pytest tests --prj <project name defined in YAML> -n <number of processes>
+tfp run <project name defined in tfp.yml> -n <number of workers>
 ```
 
 EX:
 
 ```console
-pytest tests --prj terraform-project-a -n 3
+tfp run terraform-project-a -n 3
 ```
 
-### Render report differences of all plans
-
-```console
-python report.py
-```
-
-Then, report will be render to `./report.md` .
-
-[tfenv]: https://github.com/tfutils/tfenv
+[tenv]: https://github.com/tofuutils/tenv
 [HashiCorp Terraform Extension]: https://marketplace.visualstudio.com/items?itemName=HashiCorp.terraform
 [TFLint]: https://github.com/terraform-linters/tflint
+[tfp]: https://github.com/yukihiko-shinoda/tfp
 [Docker Desktop]: https://www.docker.com/products/docker-desktop
 [Visual Studio Code]: https://code.visualstudio.com/
 [Remote Development Extension Pack]: https://marketplace.visualstudio.com/items?itemName=ms-vscode-remote.vscode-remote-extensionpack
