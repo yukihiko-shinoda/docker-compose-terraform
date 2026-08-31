@@ -18,6 +18,16 @@ services:
         # - Releases · aws-cloudformation/cloudformation-guard
         #   https://github.com/aws-cloudformation/cloudformation-guard/releases
         GUARD_VERSION: 2.1.4
+    # Claude Code's built-in Bash sandbox uses bubblewrap, which fails inside an
+    # unprivileged container with "No permissions to create a new namespace" even
+    # when the host kernel allows unprivileged user namespaces. CAP_SYS_ADMIN and
+    # a permissive seccomp policy are the combination most commonly reported to
+    # help bubblewrap create the namespaces it needs, though this is not always
+    # sufficient -- see containers/bubblewrap#505 for cases where even a long list
+    # of added capabilities still failed short of --privileged:
+    # https://github.com/containers/bubblewrap/issues/505
+    cap_add:
+      - SYS_ADMIN
     image: futureys/tenv:development
     volumes:
       - .:/workspace:cached
