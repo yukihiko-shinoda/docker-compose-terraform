@@ -24,3 +24,4 @@ services:
       - /workspace/.venv
       - ~/.aws:/root/.aws
       - ~/.claude:/root/.claude
+      - ~/.claude.json:/root/.claude.json
