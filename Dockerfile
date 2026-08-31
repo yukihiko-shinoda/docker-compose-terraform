@@ -1,4 +1,4 @@
-ARG DOCKER_BASE_IMAGE=futureys/claude-code-python-development:20260710125000
+ARG DOCKER_BASE_IMAGE=futureys/claude-code-python-development:20260831232000
 FROM ${DOCKER_BASE_IMAGE}
 # - Dockerfileで対象プラットフォームによって処理分岐させる
 #   https://zenn.dev/ytdrep/articles/d65c26201042eb
