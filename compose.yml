@@ -29,6 +29,12 @@ services:
     cap_add:
       - SYS_ADMIN
     image: futureys/tenv:development
+    # Removes Docker's default seccomp filter, which otherwise blocks the unshare/mount/
+    # pivot_root syscalls bubblewrap needs to build its sandbox even with CAP_SYS_ADMIN
+    # granted above -- without it, every Bash tool call fails the same way it does without
+    # cap_add (see the comment above cap_add).
+    security_opt:
+      - seccomp:unconfined
     volumes:
       - .:/workspace:cached
       - /workspace/.venv
