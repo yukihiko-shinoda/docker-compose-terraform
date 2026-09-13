@@ -48,11 +48,31 @@ git clone <repository of your Terraform project>
 code .
 ```
 
-#### 4\. Reopen in Container
+#### 4\. Add an AWS CLI profile for the `ai_agent` role, then seal a session
+
+The devcontainer no longer mounts `~/.aws`: it instead seals a short-lived, read-only AWS session into the
+container as Docker secrets, so your long-lived AWS key never enters it. From a real host terminal (not through
+Claude Code):
+
+1. Apply an `ai_agent` IAM role in your Terraform project, trusting the AWS profile that already holds your
+   (real) access key, then add a matching block to `~/.aws/config`:
+
+   ```ini
+   [profile ai_agent]
+   role_arn = arn:aws:iam::<ACCOUNT_ID>:role/ai_agent
+   source_profile = <source-profile-name>
+   ```
+
+2. Run `./aws-agent-session.sh` once to mint the session.
+
+#### 5\. Reopen in Container
 
 Run the `Remote-Containers: Reopen in Container` command from the Command Palette (`F1`) or quick actions Status bar item.
 
-#### 5\. Create tfp.yml to customize for your Terraform project
+This also re-runs `aws-agent-session.sh` automatically via `initializeCommand`, so the profile from step 4 must
+already exist first.
+
+#### 6\. Create tfp.yml to customize for your Terraform project
 
 Copy `tfp.yml.dist` to `tfp.yml`, then edit it.
 
@@ -103,6 +123,16 @@ EX:
 ```console
 tfp run terraform-project-a -n 3
 ```
+
+<!-- markdownlint-disable-next-line MD026 -->
+### How do I refresh an AWS session once it has expired?
+
+The sealed `ai_agent` session lasts until the assumed role's own session duration elapses, after which AWS
+calls inside the container start failing with an expired-token error. Rerun `./aws-agent-session.sh` from a
+host terminal, then:
+
+- Plain `docker compose up`: rerun it as usual — Compose detects the refreshed secret files and recreates the container
+- VS Code: run "Dev Containers: Restart Container", or "Dev Containers: Rebuild Container" to re-run the hook itself
 
 [tenv]: https://github.com/tofuutils/tenv
 [HashiCorp Terraform Extension]: https://marketplace.visualstudio.com/items?itemName=HashiCorp.terraform

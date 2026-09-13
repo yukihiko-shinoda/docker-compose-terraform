@@ -59,6 +59,29 @@ RUN uv tool install tfpcli
 # test command
 COPY ./fmt-test.sh /usr/local/bin/fmt-test
 RUN chmod +x /usr/local/bin/fmt-test
+# AWS CLI
+# - Installing or updating to the latest version of the AWS CLI - AWS Command Line Interface
+#   https://docs.aws.amazon.com/cli/latest/userguide/getting-started-install.html
+# `uname -m` sidesteps that pitfall entirely by reading the architecture directly from the
+# build environment instead of a Docker-supplied ARG. Not documented by AWS itself; it's a
+# community idiom, e.g.:
+#   https://github.com/aws/aws-mwaa-local-runner/pull/370#issuecomment-2062936829
+RUN curl --fail "https://awscli.amazonaws.com/awscli-exe-linux-$(uname -m).zip" -o "awscliv2.zip" \
+ && unzip awscliv2.zip \
+ && ./aws/install \
+ && rm -rf awscliv2.zip aws
+# AWS credential source: reads the ai_agent session from Docker secrets (see
+# aws-agent-session.sh, compose.yml, iam-role.md) instead of a mounted/env-var
+# credential. Baked outside ~/.aws -- AWS_CONFIG_FILE below points AWS CLI/SDK
+# at it instead -- so Claude Code's sandbox can deny ~/.aws entirely, for read
+# and write alike. This file holds no secret itself, only the credential_process
+# pointer, but ~/.aws is also where AWS CLI would otherwise write things like an
+# SSO/CLI credential cache.
+COPY ./aws-agent-credentials.sh /usr/local/bin/aws-agent-credentials
+RUN chmod +x /usr/local/bin/aws-agent-credentials \
+ && mkdir -p /root/.aws-agent-config \
+ && printf '[default]\ncredential_process = /usr/local/bin/aws-agent-credentials\n' > /root/.aws-agent-config/config
+ENV AWS_CONFIG_FILE=/root/.aws-agent-config/config
 # Guard
 # RUN curl --proto '=https' --tlsv1.2 -sSf https://raw.githubusercontent.com/aws-cloudformation/cloudformation-guard/main/install-guard.sh | sh
 # Install legacy version by arranging following method:

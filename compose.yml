@@ -35,9 +35,36 @@ services:
     # cap_add (see the comment above cap_add).
     security_opt:
       - seccomp:unconfined
+    environment:
+      AWS_DEFAULT_REGION: ${AWS_DEFAULT_REGION:-ap-northeast-1}
+    # Docker Secrets, not env vars or a mounted file: aws-agent-session.sh writes
+    # these under ~/.aws-agent-secrets/ on the HOST -- deliberately outside
+    # /workspace, since the .:/workspace:cached mount below would otherwise expose
+    # a repo-relative secrets directory as plain files inside the container too.
+    # Compose mounts them read-only at /opt/claude-agent-secrets/* inside the
+    # container (not the default /run/secrets/*, which Claude Code's own sandbox
+    # keeps denied -- this environment is dedicated to Claude Code, so the
+    # credential path is placed where the sandbox already allows it instead of
+    # loosening that deny). The baked-in credential_process at
+    # /root/.aws-agent-config/config (AWS_CONFIG_FILE; see Dockerfile,
+    # aws-agent-credentials.sh) reads them from there. Never shows up in
+    # `docker inspect` env output, unlike an environment: entry would.
+    secrets:
+      - source: aws_access_key_id
+        target: /opt/claude-agent-secrets/aws_access_key_id
+      - source: aws_secret_access_key
+        target: /opt/claude-agent-secrets/aws_secret_access_key
+      - source: aws_session_token
+        target: /opt/claude-agent-secrets/aws_session_token
     volumes:
       - .:/workspace:cached
       - /workspace/.venv
-      - ~/.aws:/root/.aws
       - ~/.claude:/root/.claude
       - ~/.claude.json:/root/.claude.json
+secrets:
+  aws_access_key_id:
+    file: ${HOME}/.aws-agent-secrets/aws_access_key_id
+  aws_secret_access_key:
+    file: ${HOME}/.aws-agent-secrets/aws_secret_access_key
+  aws_session_token:
+    file: ${HOME}/.aws-agent-secrets/aws_session_token
