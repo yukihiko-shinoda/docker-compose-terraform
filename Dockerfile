@@ -89,6 +89,25 @@ RUN chmod +x /usr/local/bin/aws-agent-credentials \
  && mkdir -p /root/.aws-agent-config \
  && printf '[default]\ncredential_process = /usr/local/bin/aws-agent-credentials\n' > /root/.aws-agent-config/config
 ENV AWS_CONFIG_FILE=/root/.aws-agent-config/config
+# Guard
+# RUN curl --proto '=https' --tlsv1.2 -sSf https://raw.githubusercontent.com/aws-cloudformation/cloudformation-guard/main/install-guard.sh | sh
+# Install legacy version by arranging following method:
+# - v2.1 Fails install on Codebuild · Issue #253 · aws-cloudformation/cloudformation-guard
+#   https://github.com/aws-cloudformation/cloudformation-guard/issues/253#issuecomment-1315823073
+RUN curl --proto '=https' --tlsv1.2 -sSf https://raw.githubusercontent.com/aws-cloudformation/cloudformation-guard/${GUARD_VERSION}/install-guard.sh > /tmp/install-guard.sh \
+ && sed -i "s|https://api.github.com/repos/aws-cloudformation/cloudformation-guard/releases/latest|https://api.github.com/repos/aws-cloudformation/cloudformation-guard/releases/tags/${GUARD_VERSION}|g" /tmp/install-guard.sh \
+ && sh -x /tmp/install-guard.sh
+ENV PATH="$PATH:~/.guard/bin/"
+# To prevent following error when run `terraform validate`:
+# │ Error: Missing required argument
+# │ 
+# │   on providers.tf line 20, in provider "vault":
+# │   20: provider "vault" {
+# │ 
+# │ The argument "address" is required, but no definition was found.
+# - terraform validate fails on module with vault resources · Issue #666 · hashicorp/terraform-provider-vault
+#   https://github.com/hashicorp/terraform-provider-vault/issues/666#issuecomment-586080769
+ENV VAULT_ADDR=https://example.com
 # Google Cloud CLI (gcloud)
 # - Install gcloud CLI | Google Cloud SDK Documentation
 #   https://docs.cloud.google.com/sdk/docs/install#deb
@@ -147,22 +166,3 @@ RUN case "${BUILDARCH}" in \
 # claude_code WIF IAM policy binding) if that fallback path is ever revived.
 COPY ./gws-agent.sh /usr/local/bin/gws
 RUN chmod +x /usr/local/bin/gws
-# Guard
-# RUN curl --proto '=https' --tlsv1.2 -sSf https://raw.githubusercontent.com/aws-cloudformation/cloudformation-guard/main/install-guard.sh | sh
-# Install legacy version by arranging following method:
-# - v2.1 Fails install on Codebuild · Issue #253 · aws-cloudformation/cloudformation-guard
-#   https://github.com/aws-cloudformation/cloudformation-guard/issues/253#issuecomment-1315823073
-RUN curl --proto '=https' --tlsv1.2 -sSf https://raw.githubusercontent.com/aws-cloudformation/cloudformation-guard/${GUARD_VERSION}/install-guard.sh > /tmp/install-guard.sh \
- && sed -i "s|https://api.github.com/repos/aws-cloudformation/cloudformation-guard/releases/latest|https://api.github.com/repos/aws-cloudformation/cloudformation-guard/releases/tags/${GUARD_VERSION}|g" /tmp/install-guard.sh \
- && sh -x /tmp/install-guard.sh
-ENV PATH="$PATH:~/.guard/bin/"
-# To prevent following error when run `terraform validate`:
-# │ Error: Missing required argument
-# │ 
-# │   on providers.tf line 20, in provider "vault":
-# │   20: provider "vault" {
-# │ 
-# │ The argument "address" is required, but no definition was found.
-# - terraform validate fails on module with vault resources · Issue #666 · hashicorp/terraform-provider-vault
-#   https://github.com/hashicorp/terraform-provider-vault/issues/666#issuecomment-586080769
-ENV VAULT_ADDR=https://example.com
