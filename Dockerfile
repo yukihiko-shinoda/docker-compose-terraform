@@ -40,7 +40,12 @@ ENV TENV_AUTO_INSTALL=true
 # To install TFLint and Trivy
 SHELL ["/bin/bash", "-o", "pipefail", "-c"]
 # TFLint
-RUN curl -s https://raw.githubusercontent.com/terraform-linters/tflint/master/install_linux.sh | bash
+# Reason: Upstream removed install_linux.sh (https://github.com/terraform-linters/tflint/blob/master/README.md#installation);
+# download the pinned release archive directly instead, mirroring the tenv install above.
+RUN curl -O -L https://github.com/terraform-linters/tflint/releases/download/${TFLINT_VERSION}/tflint_linux_${BUILDARCH}.zip \
+ && unzip tflint_linux_${BUILDARCH}.zip \
+ && install -c -v tflint /usr/local/bin/ \
+ && rm tflint_linux_${BUILDARCH}.zip tflint
 # Trivy
 RUN curl https://mise.run | sh
 # Reason: To put raw string into ~/.bashrc .
