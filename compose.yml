@@ -18,6 +18,12 @@ services:
         # - Releases · aws-cloudformation/cloudformation-guard
         #   https://github.com/aws-cloudformation/cloudformation-guard/releases
         GUARD_VERSION: 2.1.4
+        # - Cloud SDK release notes  |  Google Cloud CLI Documentation
+        #   https://cloud.google.com/sdk/docs/release-notes
+        GCLOUD_VERSION: 583.0.0
+        # - Releases · googleworkspace/cli
+        #   https://github.com/googleworkspace/cli/releases
+        GWS_VERSION: 0.22.5
     # Claude Code's built-in Bash sandbox uses bubblewrap, which fails inside an
     # unprivileged container with "No permissions to create a new namespace" even
     # when the host kernel allows unprivileged user namespaces. CAP_SYS_ADMIN and
@@ -56,6 +62,14 @@ services:
         target: /opt/claude-agent-secrets/aws_secret_access_key
       - source: aws_session_token
         target: /opt/claude-agent-secrets/aws_session_token
+      # Static claude-code service account key, minted on the host by
+      # gcp-agent-key.sh into ~/.gcp-agent-secrets/ -- placed in the same
+      # container directory as the AWS secrets above so Claude Code's own
+      # Bash sandbox, which already denies reading /opt/claude-agent-secrets
+      # except for the three AWS files explicitly allow-listed there, denies
+      # this file too without any sandbox config change.
+      - source: gcp_claude_code_key
+        target: /opt/claude-agent-secrets/claude-code-key.json
     volumes:
       - .:/workspace:cached
       - /workspace/.venv
@@ -68,3 +82,5 @@ secrets:
     file: ${HOME}/.aws-agent-secrets/aws_secret_access_key
   aws_session_token:
     file: ${HOME}/.aws-agent-secrets/aws_session_token
+  gcp_claude_code_key:
+    file: ${HOME}/.gcp-agent-secrets/claude-code-key.json

@@ -142,3 +142,7 @@ dmypy.json
 !workspace-template.code-workspace
 # To run Terraform parallel execution tool (tfpcli)
 tfp.yml
+# Holds no credential, but names this GCP project's number and a service account's email --
+# regenerate locally with the command in terraform-google-personal/service_accounts.tf's comment
+# above the claude_code WIF IAM policy binding if the WIF fallback path is ever revived.
+/google-wif-cred-config.json

@@ -18,13 +18,21 @@
 	// The optional 'workspaceFolder' property is the path VS Code should open by default when
 	// connected. This is typically a file mount in .devcontainer/docker-compose.yml
 	"workspaceFolder": "/workspace",
-
-	// Runs on the host, before the container is created/rebuilt, to mint a fresh
-	// short-lived ReadOnlyAccess session from the ai_agent IAM role into .env (see
-	// aws-agent-session.sh and iam-role.md) -- so the long-lived key never enters the container,
-	// even via VS Code's own compose invocation.
-	"initializeCommand": "${localWorkspaceFolder}/aws-agent-session.sh",
-
+	
+	// Runs on the host, before the container is created/rebuilt. Both entries run
+	// in parallel (object form), which is fine since they mint unrelated secrets
+	// with no dependency on each other:
+	// - aws-agent-session.sh: mints a fresh short-lived ReadOnlyAccess session
+	//   from the ai_agent IAM role (see iam-role.md) -- so the long-lived key
+	//   never enters the container, even via VS Code's own	compose invocation.
+	//   Re-mints every run since the session expires.
+	// - gcp-agent-key.sh: ensures a static claude-code service account JSON key
+	//   exists on the host. Unlike the AWS session, this key never expires, so
+	//   the script only creates it once and no-ops on every later run.
+	"initializeCommand": {
+		"aws-agent-session": "${localWorkspaceFolder}/aws-agent-session.sh",
+		"gcp-agent-key": "${localWorkspaceFolder}/gcp-agent-key.sh"
+	},
 	"customizations": {
 		"vscode": {
 			// Add the IDs of extensions you want installed when the container is created.
