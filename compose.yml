@@ -5,7 +5,7 @@ services:
       args:
         # - futureys/claude-code-python-development - Docker Image
         #   https://hub.docker.com/r/futureys/claude-code-python-development/tags
-        DOCKER_BASE_IMAGE: futureys/claude-code-python-development:20260906204000
+        DOCKER_BASE_IMAGE: futureys/claude-code-python-development:20260913152000
         # - Releases · tofuutils/tenv
         #   https://github.com/tofuutils/tenv/releases
         TENV_VERSION: v4.15.1
@@ -20,7 +20,7 @@ services:
         GUARD_VERSION: 2.1.4
         # - Cloud SDK release notes  |  Google Cloud CLI Documentation
         #   https://cloud.google.com/sdk/docs/release-notes
-        GCLOUD_VERSION: 583.0.0
+        GCLOUD_VERSION: 584.0.0
         # - Releases · googleworkspace/cli
         #   https://github.com/googleworkspace/cli/releases
         GWS_VERSION: 0.22.5

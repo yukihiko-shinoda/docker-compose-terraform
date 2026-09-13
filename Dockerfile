@@ -1,4 +1,4 @@
-ARG DOCKER_BASE_IMAGE=futureys/claude-code-python-development:20260906204000
+ARG DOCKER_BASE_IMAGE=futureys/claude-code-python-development:20260913152000
 FROM ${DOCKER_BASE_IMAGE}
 # - Dockerfileで対象プラットフォームによって処理分岐させる
 #   https://zenn.dev/ytdrep/articles/d65c26201042eb
@@ -147,15 +147,6 @@ RUN case "${BUILDARCH}" in \
 # claude_code WIF IAM policy binding) if that fallback path is ever revived.
 COPY ./gws-agent.sh /usr/local/bin/gws
 RUN chmod +x /usr/local/bin/gws
-# git credential source for github.com HTTPS operations: reads the
-# git_auth_secret Docker secret (compose.yml), mounted at
-# /opt/claude-agent-secrets/git_auth_token like the AWS/GCP secrets above,
-# instead of relying solely on VS Code Dev Containers' own git config
-# forwarding from the host -- see git-agent-credential-helper.sh for why
-# this coexists with, rather than replaces, that forwarding.
-COPY ./git-agent-credential-helper.sh /usr/local/bin/git-agent-credential-helper
-RUN chmod +x /usr/local/bin/git-agent-credential-helper \
- && git config --system credential.https://github.com.helper /usr/local/bin/git-agent-credential-helper
 # Guard
 # RUN curl --proto '=https' --tlsv1.2 -sSf https://raw.githubusercontent.com/aws-cloudformation/cloudformation-guard/main/install-guard.sh | sh
 # Install legacy version by arranging following method:
