@@ -146,3 +146,4 @@ tfp.yml
 # regenerate locally with the command in terraform-google-personal/service_accounts.tf's comment
 # above the claude_code WIF IAM policy binding if the WIF fallback path is ever revived.
 /google-wif-cred-config.json
+.env.op
