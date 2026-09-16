@@ -5,7 +5,7 @@ services:
       args:
         # - futureys/claude-code-python-development - Docker Image
         #   https://hub.docker.com/r/futureys/claude-code-python-development/tags
-        DOCKER_BASE_IMAGE: futureys/claude-code-python-development:20260913152000
+        DOCKER_BASE_IMAGE: futureys/claude-code-python-development:20260916202000
         # - Releases · tofuutils/tenv
         #   https://github.com/tofuutils/tenv/releases
         TENV_VERSION: v4.15.1
