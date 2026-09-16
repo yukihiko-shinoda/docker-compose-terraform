@@ -24,23 +24,7 @@ services:
         # - Releases · googleworkspace/cli
         #   https://github.com/googleworkspace/cli/releases
         GWS_VERSION: 0.22.5
-    # Claude Code's built-in Bash sandbox uses bubblewrap, which fails inside an
-    # unprivileged container with "No permissions to create a new namespace" even
-    # when the host kernel allows unprivileged user namespaces. CAP_SYS_ADMIN and
-    # a permissive seccomp policy are the combination most commonly reported to
-    # help bubblewrap create the namespaces it needs, though this is not always
-    # sufficient -- see containers/bubblewrap#505 for cases where even a long list
-    # of added capabilities still failed short of --privileged:
-    # https://github.com/containers/bubblewrap/issues/505
-    cap_add:
-      - SYS_ADMIN
     image: futureys/tenv:development
-    # Removes Docker's default seccomp filter, which otherwise blocks the unshare/mount/
-    # pivot_root syscalls bubblewrap needs to build its sandbox even with CAP_SYS_ADMIN
-    # granted above -- without it, every Bash tool call fails the same way it does without
-    # cap_add (see the comment above cap_add).
-    security_opt:
-      - seccomp:unconfined
     environment:
       AWS_DEFAULT_REGION: ${AWS_DEFAULT_REGION:-ap-northeast-1}
     # Docker Secrets, not env vars or a mounted file: aws-agent-session.sh writes
@@ -77,6 +61,15 @@ services:
       # this file too without any sandbox config change.
       - source: gcp_claude_code_key
         target: /opt/claude-agent-secrets/claude-code-key.json
+    # Claude Code's built-in Bash sandbox uses bubblewrap, which needs the unshare/mount/
+    # pivot_root syscalls to build its sandbox -- Docker's default seccomp filter blocks
+    # those, so it's removed here. CAP_SYS_ADMIN was also added alongside this at first
+    # (containers/bubblewrap#505 reports it as commonly needed too), but this host's
+    # kernel allows unprivileged user namespaces without it, so it was dropped once that
+    # was confirmed working:
+    # https://github.com/containers/bubblewrap/issues/505
+    security_opt:
+      - seccomp:unconfined
     volumes:
       - .:/workspace:cached
       - /workspace/.venv
